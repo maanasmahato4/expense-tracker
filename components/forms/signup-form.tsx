@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 const formSchema = z
   .object({
@@ -42,6 +43,7 @@ const formSchema = z
   });
 
 export default function SignUpForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,23 +55,25 @@ export default function SignUpForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const userCreds = {
-      username: values.username,
-      email: values.email,
-      password: values.password,
-    };
-    const response = await fetch("http://localhost:3000/api/auth/register", {
-      method: "POST",
-      body: JSON.stringify(userCreds),
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    const result = await response.json();
-    console.log(result);
-    form.reset();
+    try {
+      const userCreds = {
+        username: values.username,
+        email: values.email,
+        password: values.password,
+      };
+      await fetch("http://localhost:3000/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify(userCreds),
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+      form.reset();
+      router.push("/auth/signin");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

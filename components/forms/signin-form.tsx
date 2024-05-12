@@ -51,14 +51,16 @@ export default function SignInForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    const result = await signIn("credentials", {
-      email: values.email,
-      password: values.password,
-      callbackUrl: "/",
-    });
-    console.log(result);
-    form.reset();
+    try {
+      await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        callbackUrl: "/dashboard",
+      });
+      form.reset();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

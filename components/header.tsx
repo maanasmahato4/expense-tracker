@@ -1,40 +1,47 @@
-import { getServerSession } from "next-auth";
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { redirect } from "next/navigation";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
 
-export default async function Header() {
-  const session = (await getServerSession()) || {
-    user: { username: "guest", image: null },
-  };
+export default function Header() {
+  const { data: session } = useSession();
+  if (!session) {
+    return redirect("/auth/signin");
+  }
   return (
-    <header className="p-4 flex flex-row items-center justify-between">
-      <div className="flex flex-row items-center justify-between w-[25%]">
-        <h1 className="text-4xl font-bold">Uber</h1>
+    <header className="p-4 flex flex-row items-center justify-between border-b-[1px] border-zinc-300">
+      <div className="flex flex-row items-center justify-between w-[25%]"></div>
 
-        <Link href="/ride" className="font-semibold flex flex-row gap-x-2">
-          <Image src="/assets/car.svg" alt="Car" width={24} height={24} />
-          <span>Ride</span>
-        </Link>
-
-        <Link href="/package" className="font-semibold flex flex-row gap-x-2">
-          <Image
-            src="/assets/package.svg"
-            alt="Package"
-            width={24}
-            height={24}
-          />
-          <span>Package</span>
-        </Link>
-      </div>
-      <Avatar>
-        <AvatarImage src={""} />
-        <AvatarFallback>
-          {session?.user?.name
-            ? session.user.name.substring(0, 2).toLocaleUpperCase()
-            : session.user.username.substring(0, 2).toLocaleUpperCase()}
-        </AvatarFallback>
-      </Avatar>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Avatar>
+            <AvatarImage src={session.user.image} />
+            <AvatarFallback>
+              {session.user.name
+                ? session.user.name.substring(0, 2).toLocaleUpperCase()
+                : session?.user.username.substring(0, 2).toLocaleUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>
+            <Link href="#">Profile</Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <span onClick={() => signOut()}>Log out</span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </header>
   );
 }
