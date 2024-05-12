@@ -6,7 +6,7 @@ async function Home() {
   if (!session) {
     return redirect("/auth/signin");
   }
-  return <div></div>;
+  return <div className="h-screen">Dashboard</div>;
 }
 
 export default Home;
