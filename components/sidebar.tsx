@@ -24,12 +24,12 @@ export default function SideBar() {
     {
       label: "Budgets",
       logo: <Banknote />,
-      path: "/dashboard/banknote",
+      path: "/dashboard/budget",
     },
     {
       label: "Expenses",
       logo: <NotebookText />,
-      path: "/dashboard/expenses",
+      path: "/dashboard/expense",
     },
     {
       label: "Upgrade",

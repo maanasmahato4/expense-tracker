@@ -1,6 +1,6 @@
 import Header from "@/components/header";
 import SideBar from "@/components/sidebar";
-import React, { Fragment } from "react";
+import React from "react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

@@ -1,8 +1,8 @@
 import dbConn from "@/lib/database/database";
 import User from "@/lib/models/user";
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 import { hash } from "bcrypt";
+import { NextApiRequest } from "next";
 
 dbConn();
 
@@ -10,10 +10,7 @@ export interface ExtendedNextApiRequest extends NextApiRequest {
   json: () => Promise<any>;
 }
 
-export async function POST(
-  req: ExtendedNextApiRequest,
-  res: NextApiResponse
-): Promise<NextResponse> {
+export async function POST(req: ExtendedNextApiRequest): Promise<NextResponse> {
   try {
     const userCreds = await req.json();
 

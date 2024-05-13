@@ -9,3 +9,9 @@ export type TUser = {
   name?: string;
   image?: string;
 };
+
+export interface RouteParams {
+  params: {
+    budgetId: string;
+  };
+}
