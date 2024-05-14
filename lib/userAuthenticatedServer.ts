@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 export default async function userAuthenticatedInTheServer() {
   try {
     const session = await getServerSession();
+    console.log(session?.id);
     if (!session) {
       return redirect("/auth/signin");
     }

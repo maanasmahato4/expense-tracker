@@ -7,9 +7,11 @@ import dbConn from "@/lib/database/database";
 dbConn();
 export async function GET(req: ExtendedNextApiRequest, context: RouteParams) {
   try {
-    const budgetId = context.params.budgetId;
-    const budget = await Budget.findById(budgetId).populate("expenses").exec();
-    return new NextResponse(JSON.stringify(budget), { status: 200 });
+    const userId = context.params.userId;
+    const budgets = await Budget.find({ uuid: userId })
+      .populate("expenses")
+      .exec();
+    return new NextResponse(JSON.stringify(budgets), { status: 200 });
   } catch (error: any) {
     return new NextResponse(JSON.stringify({ error: error.message }), {
       status: 500,

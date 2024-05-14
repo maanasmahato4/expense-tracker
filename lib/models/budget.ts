@@ -5,7 +5,6 @@ const BudgetSchema = new mongoose.Schema(
     uuid: {
       type: String,
       required: true,
-      unique: true,
     },
     budgetName: {
       type: String,
@@ -15,6 +14,12 @@ const BudgetSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    expenses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Expense",
+      },
+    ],
   },
   { timestamps: true }
 );
