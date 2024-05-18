@@ -3,10 +3,9 @@ import { NextResponse } from "next/server";
 import Budget from "@/lib/models/budget";
 import dbConn from "@/lib/database/database";
 
-dbConn();
-
 export async function POST(req: ExtendedNextApiRequest) {
   try {
+    dbConn();
     const budget = await req.json();
     const newBudget = {
       ...budget,
@@ -17,6 +16,7 @@ export async function POST(req: ExtendedNextApiRequest) {
       status: 200,
     });
   } catch (error: any) {
+    console.log(error);
     return new NextResponse(JSON.stringify({ error: error.message }), {
       status: 500,
     });

@@ -2,13 +2,17 @@
 import AddBudget from "@/components/add-budget";
 import useBudgetList from "@/lib/hooks/useBudgetList";
 import useUserAuthenticatedInTheClient from "@/lib/hooks/userAuthenticatedClient";
-import Link from "next/link";
 import BudgetCard from "@/components/cards/budget-card";
 import { IBudget } from "@/@types/index";
+import { useEffect } from "react";
 
 function BudgetPage() {
   const user = useUserAuthenticatedInTheClient();
   const { data, isLoading, error } = useBudgetList(user.id);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   if (isLoading) {
     return <h3>loading...</h3>;
@@ -23,11 +27,7 @@ function BudgetPage() {
         <AddBudget />
         <div className="flex flex-row flex-wrap justify-start gap-6 py-4">
           {data.map((budget: IBudget) => {
-            return (
-              <Link href={`/dashboard/expense/${budget._id}`} key={budget._id}>
-                <BudgetCard budget={budget} />
-              </Link>
-            );
+            return <BudgetCard budget={budget} key={budget._id} />;
           })}
         </div>
       </div>
